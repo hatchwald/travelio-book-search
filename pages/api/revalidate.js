@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        await res.unstable_revalidate('/path-to-revalidate')
+        await res.unstable_revalidate('/favorites')
         return res.json({ revalidated: true })
     } catch (err) {
         // If there was an error, Next.js will continue
