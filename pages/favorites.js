@@ -89,17 +89,9 @@ export default function favorite({ data }) {
     )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const res = await fetch(`${process.env.BASE_URL}/api/books`)
     const data = await res.json()
 
-    return {
-        props: {
-            data,
-        },
-        // Next.js will attempt to re-generate the page:
-        // - When a request comes in
-        // - At most once every 10 seconds
-        revalidate: 5, // In seconds
-    }
+    return { props: { data } }
 }
