@@ -90,7 +90,7 @@ export default function favorite({ data }) {
 }
 
 export async function getStaticProps() {
-    const res = await fetch('/api/books')
+    const res = await fetch(`${process.env.BASE_URL}/api/books`)
     const data = await res.json()
 
     return {
