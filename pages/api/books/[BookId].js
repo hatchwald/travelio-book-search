@@ -19,13 +19,13 @@ export default async function handler(req, res) {
         case 'DELETE':
             Book.findOne({ id: BookId }, (err, doc) => {
                 if (doc == null) {
-                    res.status(404).json({ message: "Data not found !" })
+                    res.status(404).json({ message: "Data not found !", success: false })
                 } else {
                     Book.deleteOne({ id: BookId }, err => {
                         if (err) {
                             res.status(500).send(err)
                         } else {
-                            res.status(200).json({ message: "data has been deleted!" })
+                            res.status(200).json({ message: "data has been deleted!", success: true })
                         }
 
                     })

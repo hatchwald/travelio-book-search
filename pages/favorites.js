@@ -22,7 +22,12 @@ export default function favorite({ data }) {
         fetch(`/api/books/${e}`, requestOptions)
             .then(response => response.text())
             .then(result => {
-                toast.success("success remove book to Favorite !")
+                const data_json = JSON.parse(result)
+                if (data_json.success) {
+                    toast.success("success remove book to Favorite !")
+                } else {
+                    toast.warn(`${data_json.message} / already deleted`)
+                }
             })
             .catch(error => {
                 toast.error(`Error ${error}`)

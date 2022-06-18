@@ -36,8 +36,13 @@ export default function Home() {
     fetch("/api/books", requestOptions)
       .then(response => response.text())
       .then(result => {
-        toast.success("success add book to Favorite !")
-        console.log(result)
+        const data_json = JSON.parse(result)
+        if (data_json.success) {
+          toast.success("success add book to Favorite !")
+        } else {
+          toast.warn(data_json.message)
+        }
+        console.log(data_json)
       })
       .catch(error => {
         toast.error(`Error ${error}`)
