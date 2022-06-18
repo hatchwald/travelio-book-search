@@ -23,7 +23,6 @@ export default function favorite({ data }) {
             .then(response => response.text())
             .then(result => {
                 toast.success("success remove book to Favorite !")
-                console.log(result)
             })
             .catch(error => {
                 toast.error(`Error ${error}`)
