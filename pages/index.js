@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { useState } from 'react'
 import styles from '../styles/Home.module.css'
 import StarRatings from 'react-star-ratings'
+import { ToastContainer, toast } from 'react-toast'
+import Link from 'next/link'
 
 export default function Home() {
   const [search_field, Setsearch] = useState(null)
@@ -11,6 +13,37 @@ export default function Home() {
   const check_search = e => {
     const val = e.target.value
     Setsearch(val)
+  }
+  const handleFavorite = (param) => {
+    const myheader = new Headers()
+    myheader.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      "id": param.id,
+      "title": param.volumeInfo.title,
+      "thumbnail": param.volumeInfo.imageLinks.thumbnail,
+      "author": (param.volumeInfo.authors) ? param.volumeInfo.authors.join(",") : param.volumeInfo.publisher,
+      "rating": param.volumeInfo.averageRating
+    });
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myheader,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("/api/books", requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        toast.success("success add book to Favorite !")
+        console.log(result)
+      })
+      .catch(error => {
+        toast.error(`Error ${error}`)
+        console.log('error', error)
+      });
+    console.log("clicked ", param)
   }
   const submit_search = async (e) => {
     e.preventDefault()
@@ -36,6 +69,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <div className='has-text-right'><Link href='/favorites'> Your Favorite Books</Link></div>
         <h3 className='is-size-3'>
           Search data book with Google API
         </h3>
@@ -77,8 +111,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <ToastContainer />
       <main className={styles.main}>
-
+        <div className='is-align-self-flex-end'><Link href='/favorites'>Your Favorite Books</Link></div>
         <div className='columns'>
           <div className='column is-full'>
             <form className='field is-grouped' onSubmit={submit_search}>
@@ -112,7 +147,7 @@ export default function Home() {
                     <td><Image src={params.volumeInfo.imageLinks.thumbnail} alt="thumnail books" height={50} width={50} /></td>
                     <td>{(params.volumeInfo.authors) ? params.volumeInfo.authors.join(",") : params.volumeInfo.publisher}</td>
                     <td><StarRatings rating={params.volumeInfo.averageRating} starDimension='15' starSpacing='5px' /></td>
-                    <td><button className='button'>Add to Favorite</button></td>
+                    <td><button className='button' onClick={() => handleFavorite(params)}>Add to Favorite</button></td>
                   </tr>
                 ))}
               </tbody>
