@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useState } from 'react'
 import styles from '../styles/Home.module.css'
+import StarRatings from 'react-star-ratings'
 
 export default function Home() {
   const [search_field, Setsearch] = useState(null)
@@ -35,7 +36,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h3 className={styles.title}>
+        <h3 className='is-size-3'>
           Search data book with Google API
         </h3>
 
@@ -109,8 +110,8 @@ export default function Home() {
                     <td>{index + 1}</td>
                     <td>{params.volumeInfo.title}</td>
                     <td><Image src={params.volumeInfo.imageLinks.thumbnail} alt="thumnail books" height={50} width={50} /></td>
-                    <td>{params.volumeInfo.authors.toString()}</td>
-                    <td>rate</td>
+                    <td>{(params.volumeInfo.authors) ? params.volumeInfo.authors.join(",") : params.volumeInfo.publisher}</td>
+                    <td><StarRatings rating={params.volumeInfo.averageRating} starDimension='15' starSpacing='5px' /></td>
                     <td><button className='button'>Add to Favorite</button></td>
                   </tr>
                 ))}
