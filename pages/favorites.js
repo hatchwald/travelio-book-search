@@ -1,13 +1,12 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { useState } from 'react'
 import styles from '../styles/Home.module.css'
 import StarRatings from 'react-star-ratings'
 import { ToastContainer, toast } from 'react-toast'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-export default function favorite({ data }) {
+export default function Favorite({ data }) {
     const router = useRouter()
     const refreshData = () => {
         router.replace(router.asPath)
