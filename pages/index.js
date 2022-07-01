@@ -16,6 +16,15 @@ export default function Home() {
   }
   const handleFavorite = (param) => {
     const myheader = new Headers()
+    const success = () => {
+      toast.success("success add book to Favorite !")
+    }
+    const warning = param => {
+      toast.warn(param)
+    }
+    const errorToast = param => {
+      toast.error(param)
+    }
     myheader.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
@@ -38,14 +47,14 @@ export default function Home() {
       .then(result => {
         const data_json = JSON.parse(result)
         if (data_json.success) {
-          toast.success("success add book to Favorite !")
+          success()
         } else {
-          toast.warn(data_json.message)
+          warning(data_json.message)
         }
         console.log(data_json)
       })
       .catch(error => {
-        toast.error(`Error ${error}`)
+        errorToast(`Error ${error}`)
         console.log('error', error)
       });
     console.log("clicked ", param)
@@ -116,7 +125,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <ToastContainer />
+      <ToastContainer delay={3000} />
       <main className={styles.main}>
         <div className='is-align-self-flex-end'><Link href='/favorites'>Your Favorite Books</Link></div>
         <div className='columns'>

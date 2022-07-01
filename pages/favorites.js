@@ -8,6 +8,15 @@ import { useRouter } from 'next/router'
 
 export default function Favorite({ data }) {
     const router = useRouter()
+    const successToast = () => {
+        toast.success("success remove book to Favorite !")
+    }
+    const warningToast = param => {
+        toast.warn(param)
+    }
+    const errorToast = param => {
+        toast.error(param)
+    }
     const refreshData = () => {
         router.replace(router.asPath)
     }
@@ -28,14 +37,14 @@ export default function Favorite({ data }) {
             .then(result => {
                 const data_json = JSON.parse(result)
                 if (data_json.success) {
-                    toast.success("success remove book to Favorite !")
+                    successToast()
                     refreshData()
                 } else {
-                    toast.warn(`${data_json.message} / already deleted`)
+                    warningToast(`${data_json.message} / already deleted`)
                 }
             })
             .catch(error => {
-                toast.error(`Error ${error}`)
+                errorToast(`Error ${error}`)
                 console.log('error', error)
             });
     }
@@ -48,7 +57,7 @@ export default function Favorite({ data }) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <ToastContainer />
+            <ToastContainer delay={3000} />
             <main className={styles.main}>
                 <div className='is-align-self-flex-end'><Link href='/'>Back to Home</Link></div>
 
