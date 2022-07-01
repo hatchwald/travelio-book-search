@@ -5,8 +5,13 @@ import styles from '../styles/Home.module.css'
 import StarRatings from 'react-star-ratings'
 import { ToastContainer, toast } from 'react-toast'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 export default function favorite({ data }) {
+    const router = useRouter()
+    const refreshData = () => {
+        router.replace(router.asPath)
+    }
     const handleFavorite = (e) => {
         const myheader = new Headers()
         myheader.append("Content-Type", "application/json");
@@ -25,6 +30,7 @@ export default function favorite({ data }) {
                 const data_json = JSON.parse(result)
                 if (data_json.success) {
                     toast.success("success remove book to Favorite !")
+                    refreshData()
                 } else {
                     toast.warn(`${data_json.message} / already deleted`)
                 }
